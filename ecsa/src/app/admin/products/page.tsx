@@ -3,7 +3,10 @@ import { PageHeader } from "../_components/PageHeader";
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import db from "@/db/db";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
+import { formatCurrency } from "@/lib/formatters";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 export default function AdminProductsPage() {
     return (  
@@ -49,10 +52,10 @@ async function ProductsTable(){
         </TableHeader>
 
         <TableBody>
-            {products.map(products => (
-                <TableRow key={products.id}>
+            {products.map(product => (
+                <TableRow key={product.id}>
                     <TableCell>
-                        {products.isAvailableForPurchase ?(
+                        {product.isAvailableForPurchase ?(
                             <>
                             <span className="sr-only">Avaliable</span>
                             <CheckCircle2/>
@@ -65,6 +68,29 @@ async function ProductsTable(){
                         )
                     }
                     </TableCell>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{formatCurrency(product.priceInCents / 100)}</TableCell>
+                    <TableCell>{formatCurrency(product._count.orders)}</TableCell>
+                    <TableCell>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <MoreVertical>
+                                    <span className="sr-only">Actions</span>
+                                </MoreVertical>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem asChild>
+                                    <a download href = {`/admin/products/${product.id}/download`}>Download</a>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link download href = {`/admin/products/${product.id}/edith`}>Edith</Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        
+                    </TableCell>
+
+                    
                 </TableRow>
             )
 
