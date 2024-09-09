@@ -1,18 +1,35 @@
+"use client"
+
+
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useTransition } from "react";
-import { toggleProductAvailability } from "../../_actions/product";
+import { deleteProduct, toggleProductAvailability } from "../../_actions/product";
+import { useRouter } from "next/navigation";
+import { Router } from "lucide-react";
 
-export function ActiveToggeDropdownIteam({id, isAvailableForPurchase}:{id: String, isAvailableForPurchase: Boolean}){
+export function ActiveToggeDropdownIteam({id, isAvailableForPurchase}:{id: string, isAvailableForPurchase: boolean}){
     const [isPending, startTransition] = useTransition()
+    const router = useRouter()
+
     return(
-        <DropdownMenuItem onClick={()=>{startTransition(async () => {await toggleProductAvailability(id, !isAvailableForPurchase)}}>
+        <DropdownMenuItem disabled = {isPending} onClick={()=>{startTransition(async () => {await toggleProductAvailability(id, !isAvailableForPurchase)
+            router.refresh()
+        })}}>
+
+        {isAvailableForPurchase? "Deactivate": "Activate"}
 
         </DropdownMenuItem>
     )
 }
 
-export function DeleteDropdownItem(){
+export function DeleteDropdownItem({id, disabled}:{id: string, disabled: boolean}){
+    const [isPending, startTransition] = useTransition()
+    const router = useRouter()
     return(
-
+        <DropdownMenuItem disabled = {disabled || isPending} onClick={()=>{startTransition(async () => {await deleteProduct(id)
+            router.refresh()
+        })}}>
+        Delete
+        </DropdownMenuItem>
     )
 }

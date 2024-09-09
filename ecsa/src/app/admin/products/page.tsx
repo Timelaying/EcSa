@@ -5,8 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import db from "@/db/db";
 import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
 import { formatCurrency } from "@/lib/formatters";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ActiveToggeDropdownIteam, DeleteDropdownItem } from "./_components/ProductActions";
 
 export default function AdminProductsPage() {
     return (  
@@ -63,7 +64,7 @@ async function ProductsTable(){
                         ) : (
                             <>
                             <span className="sr-only">Avaliable</span>
-                            <XCircle />
+                            <XCircle className="stroke-destructive"/>
                             </>
                         )
                     }
@@ -85,6 +86,9 @@ async function ProductsTable(){
                                 <DropdownMenuItem asChild>
                                     <Link download href = {`/admin/products/${product.id}/edith`}>Edith</Link>
                                 </DropdownMenuItem>
+                                <ActiveToggeDropdownIteam id ={product.id} isAvailableForPurchase={product.isAvailableForPurchase} />
+                                <DropdownMenuSeparator/>
+                                <DeleteDropdownItem id ={product.id} disabled={product._count.orders > 0} />
                             </DropdownMenuContent>
                         </DropdownMenu>
                         
