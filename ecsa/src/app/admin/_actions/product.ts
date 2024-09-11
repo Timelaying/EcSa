@@ -61,6 +61,8 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
     const data = result.data
     const product = await db.product.findUnique({ where: {id }})
 
+    if (product == null) return notFound()
+
     await fs.mkdir("products", { recursive: true})
     const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
     await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
