@@ -63,15 +63,23 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
 
     if (product == null) return notFound()
 
-    await fs.mkdir("products", { recursive: true})
+    let filePath = product.filePath
+    if (data.file != null && data.file.size > 0){
+    await fs.unlink(product.filePath)
     const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
     await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
+    }
 
-    await fs.mkdir("public/products", { recursive: true})
-    const imagePath = `/products/${crypto.randomUUID()}-${data.file.name}`
-    await fs.writeFile(`public${imagePath}`, Buffer.from(await data.file.arrayBuffer()))
+    let imagePath = product.imagePath
+    if (data.image != null && data.image.size > 0){
+    await fs.unlink(`public${product.imagePath}`)
+    const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
+    await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
+    }
 
-    await db.product.create({ data: {
+    await db.product.update({ 
+        where: {id},
+        data: {
         isAvailableForPurchase: false,
         name: data.name,
         description: data.description,
