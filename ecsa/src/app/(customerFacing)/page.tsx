@@ -1,4 +1,5 @@
 import db from "@/db/db"
+import { Product } from "@prisma/client"
 
 function getMostPopularProducts() {
    return  db.product.findMany({
@@ -24,6 +25,15 @@ function getMostPopularProducts() {
     </main>
  }
 
- function ProductGridSection() {
+ type ProductGridSectionProps = {
+   title: string
+   productsFetcher: () => Promise<Product[]>
+ }
 
+ function ProductGridSection({productsFetcher, title,}: ProductGridSectionProps) {
+   ;<div className="space-y-4">
+      <div className="flex- gap-4">
+         <h2 className="text-3xl font-bold">{title}</h2>
+      </div>
+   </div>
  }
