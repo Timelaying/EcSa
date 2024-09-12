@@ -1,3 +1,29 @@
- export default function HomePage() {
-    return <h1>Hi</h1>
+import db from "@/db/db"
+
+function getMostPopularProducts() {
+   return  db.product.findMany({
+      where: {isAvailableForPurchase: true},
+      orderBy: {orders: { _count: "desc"}},
+      take: 6
+   })
+ }
+
+ function getNewestProducts() {
+   return  db.product.findMany({
+      where: {isAvailableForPurchase: true},
+      orderBy: { createdAt: "desc"},
+      take: 6
+   })
+ }
+ 
+ export default function HomePage() { 
+    return <main className="space-y-12">
+      <ProductGridSection productsFetcher={getMostPopularProducts}/>
+      <ProductGridSection productsFetcher={getNewestProducts}/>
+
+    </main>
+ }
+
+ function ProductGridSection() {
+
  }
