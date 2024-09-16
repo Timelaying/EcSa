@@ -12,7 +12,7 @@ type ProductCardProps = {
     imagePath: string
 }
 
-export function ProductCard({ id, name, princeInCents, description, imagePath }: ProductCardProps){
+export function ProductCard({ id, name, priceInCents, description, imagePath }: ProductCardProps){
     return (
         <Card className="flex overflow-hidden flex-col">
             <div className="relative w-full h-auto aspect-video">
@@ -20,7 +20,7 @@ export function ProductCard({ id, name, princeInCents, description, imagePath }:
             </div>
             <CardHeader>
                 <CardTitle>{name}</CardTitle>
-                <CardDescription>{formatCurrency(princeInCents / 100)}</CardDescription>
+                <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
                 <p className="line-clamp-4">{description}</p>
