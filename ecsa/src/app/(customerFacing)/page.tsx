@@ -14,13 +14,13 @@ const getMostPopularProducts = cache(() => {
    })
  }, ["/", "etMostPopularProducts"], {revalidate: 60 * 60 * 24})
 
- function getNewestProducts() {
+ const getNewestProducts = cache(() => {
    return  db.product.findMany({
       where: {isAvailableForPurchase: true},
       orderBy: { createdAt: "desc"},
       take: 6
    })
- }
+ }, ["/", "getNewestProducts"])
  
  export default function HomePage() { 
     return <main className="space-y-12">
