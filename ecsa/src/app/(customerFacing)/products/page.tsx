@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 function getProducts(){
     return db.product.findMany({
-        where: {isAvailableForPurchase: true}
+        where: {isAvailableForPurchase: true}, orderBy: { name: "asc"},
     })
 }
 
