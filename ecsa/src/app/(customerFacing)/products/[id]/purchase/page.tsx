@@ -19,5 +19,5 @@ export default async function PurchasePage({params: { id },}: {params: { id: str
         throw Error ("Stripe failed to create payment intent")
     }
 
-    return <CheckoutForm product={product} clientSecret={paymentIntent.client_secret}
+    return <CheckoutForm product={product} clientSecret={paymentIntent.client_secret} />
 }
