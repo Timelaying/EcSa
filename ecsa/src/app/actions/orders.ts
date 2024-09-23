@@ -7,7 +7,7 @@ export async function userOrderExists(email: string, productId: string){
         (await db.order.findFirst({
             where: { user: { email }, productId},
             select: {id: true},
-        }))
+        }))  !=null
     )
 
 }
