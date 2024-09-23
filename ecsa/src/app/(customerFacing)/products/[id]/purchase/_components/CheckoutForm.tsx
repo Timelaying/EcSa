@@ -1,5 +1,6 @@
 "use client"
 
+import { userOrderExists } from "@/app/actions/orders"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatCurrency } from "@/lib/formatters"
@@ -10,6 +11,7 @@ import { FormEvent, useState } from "react"
 
 type CheckoutFormProps = {
     product: {
+        id: string
         imagePath : string
         name: string
         priceInCents: number
