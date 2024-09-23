@@ -1,4 +1,7 @@
-export default function SuccessPage(){
+import { formatCurrency } from "@/lib/formatters";
+import Image from "next/image";
+
+export default function SuccessPage({searchParams, }: {searchParams: { payment_intent: string}}){
     return (
         <div className="max-w-5xl w-full mx-auto space-y-8">
         <div className="flex gap-4 items-center">
