@@ -1,6 +1,8 @@
+import { Button } from "@/components/ui/button";
 import db from "@/db/db";
 import { formatCurrency } from "@/lib/formatters";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Stripe from "stripe";
 
@@ -18,10 +20,11 @@ export default async function SuccessPage({searchParams, }: {searchParams: { pay
     })
     if (product == null) return notFound()
 
-    const isSuccess = paymentIntent.status === "Succeeded"
+    const isSuccess = false
 
     return (
         <div className="max-w-5xl w-full mx-auto space-y-8">
+            <h1 className="text-4xl font-bold">{isSuccess ? "Success!" : "Error"}</h1>
         <div className="flex gap-4 items-center">
             <div className="aspect-video flex-shrink-0 w-1/3 relative">
                 <Image src={product.imagePath} fill alt={product.name} className="object-cover" />
@@ -32,8 +35,22 @@ export default async function SuccessPage({searchParams, }: {searchParams: { pay
                 </div>
                 <h1 className="text-2x1 font-bold">{product.name}</h1>
                 <div className="line-clamp-3 text-muted-foreground">{product.description}</div>
+                <Button className="mt-4" size="lg" asChild>
+                    {isSuccess ? (
+                        <a href={`/products/download/${createDownloadVerification(product.id)}` }></a>
+                    ): (
+                        <Link href={`/products/${product.id}/purchase`}>
+                            Try Again
+                        </Link>
+                    )}
+                </Button>
             </div>
         </div>
     </div>
     )
+}
+
+
+function createDownloadVerification(productId : string){
+    return db.downloadVerification.create({ data: {productId, expiresAt: new Date(Date.now() + 1000 *60 *60 *24)}})
 }
