@@ -37,7 +37,7 @@ export default async function SuccessPage({searchParams, }: {searchParams: { pay
                 <div className="line-clamp-3 text-muted-foreground">{product.description}</div>
                 <Button className="mt-4" size="lg" asChild>
                     {isSuccess ? (
-                        <a href={`/products/download/${createDownloadVerification(product.id)}` }></a>
+                        <a href={`/products/download/${ await createDownloadVerification(product.id)}` }></a>
                     ): (
                         <Link href={`/products/${product.id}/purchase`}>
                             Try Again
@@ -51,6 +51,6 @@ export default async function SuccessPage({searchParams, }: {searchParams: { pay
 }
 
 
-function createDownloadVerification(productId : string){
-    return db.downloadVerification.create({ data: {productId, expiresAt: new Date(Date.now() + 1000 *60 *60 *24)}})
+ async function createDownloadVerification(productId : string){
+    return ( await db.downloadVerification.create({ data: {productId, expiresAt: new Date(Date.now() + 1000 *60 *60 *24)}, }) ).id
 }
