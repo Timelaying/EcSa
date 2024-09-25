@@ -32,6 +32,6 @@ export async  function POST(req: NextRequest){
             create: userFields,
             update: userFields,
             select: {orders: {orderBy: {createdAt: "desc"}, take: 1}}
-        })}
+        })
     }
 }
