@@ -41,4 +41,4 @@ export async  function POST(req: NextRequest){
             },
         })
     }
-}
+} /// still need to create email verfication and also env
