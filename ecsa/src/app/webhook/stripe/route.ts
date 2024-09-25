@@ -1,9 +1,10 @@
 import db from "@/db/db";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import {Resend} from "resend"
 
 const stripe = new Stripe(process.env.NODE_ENV as string) //this where we had stripe cli issues, replace env stripe secrete key
-// const resend = new Resend() ---> resend email api
+// const resend = new Resend(process.env.RESEND_API_KEY as string) ---> resend email api
 
 
 export async  function POST(req: NextRequest){
