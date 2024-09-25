@@ -27,7 +27,7 @@ export async  function POST(req: NextRequest){
             orders: { create: { productId, pricePaidInCents }},
         }
 
-        const {orders: [order]db.user.upsert({
+        const {orders: [order]} = await db.user.upsert({
             where: {email},
             create: userFields,
             update: userFields,
