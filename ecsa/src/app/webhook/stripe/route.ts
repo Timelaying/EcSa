@@ -15,5 +15,10 @@ export async  function POST(req: NextRequest){
         const productId = charge.metadata.productId
         const email = charge.billing_details.email
         const pricePaidInCents = charge.amount
+
+        const product = await db.product.findUnique({ where: { id: product }})
+        if (product == null || email == null){
+            return new NextResponse("Bad Request", {status: 400 })
+        }
     }
 }
