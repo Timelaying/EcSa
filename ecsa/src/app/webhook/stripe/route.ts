@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.NODE_ENV as string) //this where we had stripe cli issues, replace env stripe secrete key
+// const resend = new Resend() ---> resend email api
+
 
 export async  function POST(req: NextRequest){
     const event = await stripe.webhooks.constructEvent(
