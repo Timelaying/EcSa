@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import {Resend} from "resend"
 
 const stripe = new Stripe(process.env.NODE_ENV as string) //this where we had stripe cli issues, replace env stripe secrete key
-// const resend = new Resend(process.env.RESEND_API_KEY as string) ---> resend email api
+const resend = new Resend()//process.env.RESEND_API_KEY as string) ---> resend email api
 
 
 export async  function POST(req: NextRequest){
@@ -43,5 +43,15 @@ export async  function POST(req: NextRequest){
                 expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
             },
         })
+        
+        /// still need to create email verfication and also env
+         await resend.emails.send({
+            from: `Support <${process.env.SENDER_EMAIL}>`,
+            to: email,
+            subject: "Order Confirmation",
+            react: <h1>Hello</h1>
+        })
     }
-} /// still need to create email verfication and also env
+
+    return new NextResponse()
+} 
