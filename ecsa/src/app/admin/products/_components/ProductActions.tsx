@@ -22,7 +22,7 @@ export function ActiveToggeDropdownIteam({id, isAvailableForPurchase}:{id: strin
     )
 }
 
-export function DeleteDropdownItem({id, disabled}:{id: string, disabled: boolean}){
+export function DeleteDropdownItem({ id, disabled }:{id: string, disabled: boolean}){
     const [isPending, startTransition] = useTransition()
     const router = useRouter()
     return(
