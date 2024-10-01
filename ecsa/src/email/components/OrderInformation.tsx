@@ -37,6 +37,7 @@ export function OrderInformation({ order, product, downloadVerificationId}: Orde
             width="100%"
             alt={product.name}
             src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.imagePath}`} />
+            
         </Section>
         </>
     )
