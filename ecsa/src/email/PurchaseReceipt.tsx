@@ -11,7 +11,7 @@ type PurchaseReceiptEmailProps = {
 }
 
 PurchaseReceiptEmail.PreviewProps = {
-    product: {name: "product name"},
+    product: {name: "Product name", imagePath: ""},
     order: {id: crypto.randomUUID(), createdAt: new Date(), pricePaidInCents: 1000, },
     downloadVerificationId: crypto.randomUUID()
 } satisfies PurchaseReceiptEmailProps

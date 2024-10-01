@@ -34,7 +34,6 @@ export function OrderInformation({ order, product, downloadVerificationId}: Orde
 
         <Section className="border border-solid border-gray-500 rounded-lg p-4 md:p-6 my-4">
             <Img src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.imagePath}`} />
-
         </Section>
         </>
     )
