@@ -3,7 +3,7 @@ import { Column, Img, Row, Section, Text } from "@react-email/components"
 
 type OrderInformationProps = {
     order: {id: string; createdAt: Date; pricePaidInCents: number}
-    product: {imagePath: string}
+    product: {imagePath: string; name: string; description: string}
     downloadVerificationId: string
 }
 
@@ -33,7 +33,10 @@ export function OrderInformation({ order, product, downloadVerificationId}: Orde
         </Section> 
 
         <Section className="border border-solid border-gray-500 rounded-lg p-4 md:p-6 my-4">
-            <Img src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.imagePath}`} />
+            <Img 
+            width="100%"
+            alt={product.name}
+            src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.imagePath}`} />
         </Section>
         </>
     )

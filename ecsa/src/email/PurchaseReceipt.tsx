@@ -4,6 +4,7 @@ import { OrderInformation } from "./components/OrderInformation";
 type PurchaseReceiptEmailProps = {
     product: {
         name: string
+        imagePath: string
     }
 
     order: {id: string; createdAt: Date; pricePaidInCents: number}
