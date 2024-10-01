@@ -1,9 +1,9 @@
 import { formatCurrency } from "@/lib/formatters";
-import { Column, Row, Section, Text } from "@react-email/components"
+import { Column, Img, Row, Section, Text } from "@react-email/components"
 
 type OrderInformationProps = {
     order: {id: string; createdAt: Date; pricePaidInCents: number}
-    product: {}
+    product: {imagePath: string}
     downloadVerificationId: string
 }
 
@@ -31,6 +31,11 @@ export function OrderInformation({ order, product, downloadVerificationId}: Orde
                 </Column>
             </Row>
         </Section> 
+
+        <Section className="border border-solid border-gray-500 rounded-lg p-4 md:p-6 my-4">
+            <Img src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.imagePath}`} />
+
+        </Section>
         </>
     )
 }
