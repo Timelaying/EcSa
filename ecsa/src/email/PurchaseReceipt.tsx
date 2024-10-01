@@ -1,6 +1,17 @@
 import { Body, Container, Head, Heading, Html, Preview, Tailwind } from "@react-email/components";
+import { OrderInformation } from "./components/OrderInformation";
 
-export default function PurchaseReceiptEmail({ product }){
+type PurchaseReceiptEmailProps = {
+    product: {
+        name: string
+    }
+}
+
+PurchaseReceiptEmail.PreviewProps = {
+    product: {name: "product name"},
+} satisfies PurchaseReceiptEmailProps
+
+export default function PurchaseReceiptEmail({ product } : PurchaseReceiptEmailProps){
 return (
     <Html>
         <Preview>Download {product.name} and view receipt</Preview>
