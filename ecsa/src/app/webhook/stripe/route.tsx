@@ -54,7 +54,7 @@ export async  function POST(req: NextRequest){
                 <PurchaseReceiptEmail
                 order={order}
                 product={product}
-                downloadVerificationId={downloadVerification.id}
+                downloadVerificationId={downloadVerification.id}/>
             )
         })
     }
