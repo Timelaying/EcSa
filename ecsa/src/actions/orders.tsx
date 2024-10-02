@@ -42,7 +42,16 @@ Promise<{ message?: string; error?: string}> {
         }
     }
 
-    
+    const orders = user.orders.map(order => {
+        return {
+            ...order,
+            downloadVerficationId: db.downloadVerification.create({
+                data: {
+                    expiresAt : new
+                }
+            })
+        }
+    })
 
     return {message: ""}
 }
