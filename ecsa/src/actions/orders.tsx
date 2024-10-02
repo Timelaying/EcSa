@@ -56,5 +56,16 @@ Promise<{ message?: string; error?: string}> {
         }
     })
 
+    const data = await resend.emails.send({
+        from: `Support <${process.env.SENDER_EMAIL}>`,
+        to: user.email,
+        subject: "Order History",
+        react: <OrderHistory />
+    })
+
+    if (data.error) {
+        return {error: "There was an error sending the email"}
+    }
+
     return {message: ""}
 }
