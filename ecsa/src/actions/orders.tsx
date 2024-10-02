@@ -1,5 +1,6 @@
 "use server"
 
+import db from "@/db/db";
 import { z } from "zod";
 
 const emailSchema = z.string().email()
@@ -12,4 +13,27 @@ Promise<{ message?: string; error?: string}> {
     if (result.success === false){
         return {error: "Invalid email address"}
     }
+
+    const user = await db.user.findUnique({where:{ email: result.data }, select: {
+        email: true,
+        orders: {
+            select: {
+                pricePaidInCents: true,
+                id: true,
+                createdAt: true,
+                product: {
+                    select: {
+                        id: true,
+                        name: true,
+                        imagePath: true,
+                        description: true
+                    }
+                }
+            }
+        }
+    }
+
+    })
+
+    return {message: ""}
 }
