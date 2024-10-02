@@ -27,13 +27,22 @@ Promise<{ message?: string; error?: string}> {
                         name: true,
                         imagePath: true,
                         description: true
-                    }
-                }
-            }
+                    },
+                },
+            },
+        },
+    },
+
+    })
+
+    if (user == null){
+        return{
+            message:
+            "Check your email to view your order history"
         }
     }
 
-    })
+    
 
     return {message: ""}
 }
