@@ -47,9 +47,10 @@ Promise<{ message?: string; error?: string}> {
             ...order,
             downloadVerficationId: db.downloadVerification.create({
                 data: {
-                    expiresAt : new
-                }
-            })
+                    expiresAt : new Date(Date.now() + 24 * 1000 * 60 * 60),
+                    productId: order.product.id,
+                },
+            }),
         }
     })
 
