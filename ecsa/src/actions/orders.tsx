@@ -1,9 +1,11 @@
 "use server"
 
 import db from "@/db/db";
+import { Resend } from "resend";
 import { z } from "zod";
 
 const emailSchema = z.string().email()
+const resend = new Resend(process.env.RESEND_API_KEY as string)
 
 export async function emailOrderHistory(prevState: unknown, formData: FormData)
 : 
