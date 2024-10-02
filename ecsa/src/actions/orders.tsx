@@ -67,5 +67,5 @@ Promise<{ message?: string; error?: string}> {
         return {error: "There was an error sending the email"}
     }
 
-    return {message: ""}
+    return {message: "Check your email to view your order history"}
 }
