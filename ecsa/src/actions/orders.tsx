@@ -1,6 +1,7 @@
 "use server"
 
 import db from "@/db/db";
+import OrderHistoryEmail from "@/email/OrderHistory";
 import { Resend } from "resend";
 import { z } from "zod";
 
@@ -44,15 +45,16 @@ Promise<{ message?: string; error?: string}> {
         }
     }
 
-    const orders = user.orders.map(order => {
+    const orders = user.orders.map( async order => {
         return {
             ...order,
-            downloadVerficationId: db.downloadVerification.create({
+            downloadVerificationId: ( await db.downloadVerification.create({
                 data: {
                     expiresAt : new Date(Date.now() + 24 * 1000 * 60 * 60),
                     productId: order.product.id,
                 },
-            }),
+            })
+            ).id,
         }
     })
 
@@ -60,7 +62,7 @@ Promise<{ message?: string; error?: string}> {
         from: `Support <${process.env.SENDER_EMAIL}>`,
         to: user.email,
         subject: "Order History",
-        react: <OrderHistory />
+        react: <OrderHistoryEmail  orders={await Promise.all(orders)} />,
     })
 
     if (data.error) {
