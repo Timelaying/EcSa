@@ -3,3 +3,5 @@ build
 .dockerignore
 Dockerfile
 .env
+/products
+/public/products
