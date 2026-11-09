@@ -4,15 +4,14 @@ import Stripe from "stripe";
 import {Resend} from "resend"
 import PurchaseReceiptEmail from "@/email/PurchaseReceipt";
 
-const stripe = new Stripe(process.env.NODE_ENV as string) //this where we had stripe cli issues, replace env stripe secrete key
-const resend = new Resend()//process.env.RESEND_API_KEY as string) ---> resend email api
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
 
 export async  function POST(req: NextRequest){
     const event = await stripe.webhooks.constructEvent(
         await req.text(),
         req.headers.get("stripe-signature") as string,
-        process.env.NODE_ENV as string          // replace env stripe secert key
+        process.env.STRIPE_WEBHOOK_SECRET as string
     )
 
     if (event.type === "charge.succeeded") {
@@ -45,7 +44,7 @@ export async  function POST(req: NextRequest){
             },
         })
         
-        /// still need to create email verfication and also env
+         const resend = new Resend(process.env.RESEND_API_KEY as string)
          await resend.emails.send({
             from: `Support <${process.env.SENDER_EMAIL}>`,
             to: email,

@@ -6,7 +6,6 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 const emailSchema = z.string().email()
-const resend = new Resend(process.env.RESEND_API_KEY as string)
 
 export async function emailOrderHistory(prevState: unknown, formData: FormData)
 : 
@@ -58,6 +57,7 @@ Promise<{ message?: string; error?: string}> {
         }
     })
 
+    const resend = new Resend(process.env.RESEND_API_KEY as string)
     const data = await resend.emails.send({
         from: `Support <${process.env.SENDER_EMAIL}>`,
         to: user.email,
