@@ -1,6 +1,6 @@
 import db from "@/db/db";
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs/promises"
+import { readStoredFile, extensionOf } from "@/lib/storage"
 
 export async function GET(
     req: NextRequest, {
@@ -16,14 +16,14 @@ export async function GET(
         return NextResponse.redirect(new URL("/products/download/expired", req.url))
     }
 
-    const {size} = await fs.stat(data.product.filePath)
-    const file = await fs.readFile(data.product.filePath)
-    const extension = data.product.filePath.split(".").pop()
+    const file = await readStoredFile(data.product.filePath)
+    if (file == null) return NextResponse.redirect(new URL("/products/download/expired", req.url))
+    const extension = extensionOf(data.product.filePath)
 
-    return new NextResponse(file,{
+    return new NextResponse(new Uint8Array(file),{
         headers: {
         "Content-Disposition": `attachment; filename="${data.product.name}.${extension}"`,
-        "Content-Lenght": size.toString(),
+        "Content-Length": file.length.toString(),
          },
     })
 

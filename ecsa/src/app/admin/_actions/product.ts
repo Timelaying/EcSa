@@ -2,7 +2,7 @@
 
 import db from "@/db/db"
 import { z } from "zod"
-import fs from "fs/promises";
+import { saveFile, removeStoredFile } from "@/lib/storage";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -28,13 +28,8 @@ export async function addProduct(prevState: unknown, formData: FormData){
 
     const data = result.data
 
-    await fs.mkdir("products", { recursive: true})
-    const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
-
-    await fs.mkdir("public/products", { recursive: true})
-    const imagePath = `/products/${crypto.randomUUID()}-${data.file.name}`
-    await fs.writeFile(`public${imagePath}`, Buffer.from(await data.file.arrayBuffer()))
+    const filePath = await saveFile(data.file, "file")
+    const imagePath = await saveFile(data.image, "image")
 
     await db.product.create({ data: {
         isAvailableForPurchase: false,
@@ -69,16 +64,14 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
 
     let filePath = product.filePath
     if (data.file != null && data.file.size > 0){
-    await fs.unlink(product.filePath)
-    const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
+        await removeStoredFile(product.filePath, "file")
+        filePath = await saveFile(data.file, "file")
     }
 
     let imagePath = product.imagePath
     if (data.image != null && data.image.size > 0){
-    await fs.unlink(`public${product.imagePath}`)
-    const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
-    await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
+        await removeStoredFile(product.imagePath, "image")
+        imagePath = await saveFile(data.image, "image")
     }
 
     await db.product.update({ 
@@ -108,8 +101,8 @@ export async function deleteProduct(id:string){
     const product = await db.product.delete({where: {id}})
     if (product == null) return notFound()
 
-     await fs.unlink(product.filePath)   
-     await fs.unlink(`public${product.filePath}`)    
+     await removeStoredFile(product.filePath, "file")
+     await removeStoredFile(product.imagePath, "image")
 
      revalidatePath("/")
      revalidatePath("/admin/products") 
