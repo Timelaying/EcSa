@@ -34,6 +34,8 @@ For webhooks locally: `stripe listen --forward-to localhost:3000/webhook/stripe`
 3. Run `npx prisma migrate deploy` once against that database, then `npm run db:seed` for demo data.
 4. In Stripe, add a webhook endpoint for `https://<your-domain>/webhook/stripe` listening to `charge.succeeded`, and use its signing secret as `STRIPE_WEBHOOK_SECRET`.
 
-## Known limitation
+## File storage
 
-Product files and images uploaded in the admin area are written to the local disk. Vercel's filesystem is read-only, so uploads and file downloads work when self-hosting (for example with the included Dockerfile) but not on Vercel. The seeded demo products display and can be bought, but they have no downloadable file. Moving uploads to object storage such as Vercel Blob is the next step.
+Uploaded product files and images are stored in Vercel Blob when `BLOB_READ_WRITE_TOKEN` is set (create a Blob store in the Vercel project's Storage tab and connect it; the token is added automatically). Without the token they are written to local disk, which works for local development and Docker but not on Vercel.
+
+Blob URLs are unguessable but public, so this is suitable for a demo; for paid products at scale, serve files through short-lived signed URLs instead. The seeded demo products have no file behind them, so their download link shows the "expired" page.
