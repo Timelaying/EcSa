@@ -57,6 +57,10 @@ Promise<{ message?: string; error?: string}> {
         }
     })
 
+    if (!process.env.RESEND_API_KEY) {
+        return {error: "Order emails are disabled in this demo"}
+    }
+
     const resend = new Resend(process.env.RESEND_API_KEY as string)
     const data = await resend.emails.send({
         from: `Support <${process.env.SENDER_EMAIL}>`,
